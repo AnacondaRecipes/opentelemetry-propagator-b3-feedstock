@@ -27,8 +27,7 @@ requirements:
 test:
   imports:
     - opentelemetry
-    - opentelemetry.context
-
+    - opentelemetry.propagators.b3
   commands:
     - pip check
   requires:
