@@ -11,7 +11,7 @@ source:
 
 build:
   script:  {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
-  skip: True  # [py<310]
+  skip: True  # [py<38]
   number: 0
 
 requirements:
