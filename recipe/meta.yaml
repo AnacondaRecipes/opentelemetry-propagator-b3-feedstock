@@ -1,5 +1,5 @@
 {% set name = "opentelemetry-propagator-b3" %}
-{% set version = "1.38.0" %}
+{% set version = "1.39.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace("-", "_") }}-{{ version }}.tar.gz
-  sha256: 16f42fa7a30a41dd710c67832e63985def8f6eddd8425becb832ba20b40595b5
+  sha256: bbe24c025cb3db0c26862907bd4f9fc94776a63b2926927040095a350578cfd2
 
 build:
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
@@ -28,11 +28,16 @@ requirements:
     - typing_extensions >=4.5.0
 
 test:
+  source_files:
+    - tests
   imports:
     - opentelemetry
     - opentelemetry.propagators.b3
-  source_files:
-    - tests/
+  requires:
+    - pip
+    - opentelemetry-sdk
+    - pytest
+    - setuptools
   commands:
     - pip check
     - python -c "from opentelemetry.propagators.b3 import B3SingleFormat; B3SingleFormat()"
@@ -40,10 +45,6 @@ test:
     - python -c "import pkg_resources; assert any(ep.name == 'b3' for ep in pkg_resources.iter_entry_points('opentelemetry_propagator'))"
     - python -c "import pkg_resources; assert any(ep.name == 'b3multi' for ep in pkg_resources.iter_entry_points('opentelemetry_propagator'))"
     - pytest -v tests
-  requires:
-    - pip
-    - opentelemetry-sdk
-    - pytest =7.4.4
 
 about:
   home: https://github.com/open-telemetry/opentelemetry-python/tree/main/propagator/opentelemetry-propagator-b3
