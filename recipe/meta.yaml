@@ -1,31 +1,34 @@
 {% set name = "opentelemetry-propagator-b3" %}
-{% set version = "1.39.1" %}
+{% set version = "1.43.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace("-", "_") }}-{{ version }}.tar.gz
-  sha256: bbe24c025cb3db0c26862907bd4f9fc94776a63b2926927040095a350578cfd2
+  sha256: 22d1057f07a9af00c861bbab33f082dfa544821a1699b03c44b6464f53226b2a
 
 build:
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
-  skip: true  # [py<39]
   number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vvv
   entry_points:
     - b3 = opentelemetry.propagators.b3:B3SingleFormat
     - b3multi = opentelemetry.propagators.b3:B3MultiFormat
+  skip: true  # [py<310]
 
 requirements:
   host:
-    - python
     - pip
+    - python
     - hatchling
   run:
     - python
     - opentelemetry-api >=1.3,<2
     - typing_extensions >=4.5.0
+  run_constrained:
+    # pkg_resources is removed in setuptools 82
+    - setuptools <82
 
 test:
   source_files:
