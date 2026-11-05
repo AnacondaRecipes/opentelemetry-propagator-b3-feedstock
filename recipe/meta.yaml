@@ -26,9 +26,6 @@ requirements:
     - python
     - opentelemetry-api >=1.3,<2
     - typing_extensions >=4.5.0
-  run_constrained:
-    # pkg_resources is removed in setuptools 82
-    - setuptools <82
 
 test:
   source_files:
@@ -40,13 +37,12 @@ test:
     - pip
     - opentelemetry-sdk
     - pytest
-    - setuptools
   commands:
     - pip check
     - python -c "from opentelemetry.propagators.b3 import B3SingleFormat; B3SingleFormat()"
     - python -c "from opentelemetry.propagators.b3 import B3MultiFormat; B3MultiFormat()"
-    - python -c "import pkg_resources; assert any(ep.name == 'b3' for ep in pkg_resources.iter_entry_points('opentelemetry_propagator'))"
-    - python -c "import pkg_resources; assert any(ep.name == 'b3multi' for ep in pkg_resources.iter_entry_points('opentelemetry_propagator'))"
+    - python -c "from importlib.metadata import entry_points; assert any(ep.name == 'b3' for ep in entry_points(group='opentelemetry_propagator'))"
+    - python -c "from importlib.metadata import entry_points; assert any(ep.name == 'b3multi' for ep in entry_points(group='opentelemetry_propagator'))"
     - pytest -vv tests
 
 about:
