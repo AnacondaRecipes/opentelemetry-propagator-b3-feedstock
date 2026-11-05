@@ -1,5 +1,5 @@
 {% set name = "opentelemetry-propagator-b3" %}
-{% set version = "1.43.0" %}
+{% set version = "1.45.1" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace("-", "_") }}-{{ version }}.tar.gz
-  sha256: 22d1057f07a9af00c861bbab33f082dfa544821a1699b03c44b6464f53226b2a
+  sha256: 0f7d346b2cc2e9ec157c4e5c03f787d8631e61edc4b71978bb3bca2bb228db94
 
 build:
   number: 0
@@ -47,7 +47,7 @@ test:
     - python -c "from opentelemetry.propagators.b3 import B3MultiFormat; B3MultiFormat()"
     - python -c "import pkg_resources; assert any(ep.name == 'b3' for ep in pkg_resources.iter_entry_points('opentelemetry_propagator'))"
     - python -c "import pkg_resources; assert any(ep.name == 'b3multi' for ep in pkg_resources.iter_entry_points('opentelemetry_propagator'))"
-    - pytest -v tests
+    - pytest -vv tests
 
 about:
   home: https://github.com/open-telemetry/opentelemetry-python/tree/main/propagator/opentelemetry-propagator-b3
